@@ -2,7 +2,7 @@
 menu:
   home: /
   categories: /categories
-  #about: /about
+  about: /about
   archives: /archives
   tags: /tags
   #commonweal: /404.html
@@ -21,7 +21,7 @@ rss:
 # Icon fonts
 # Place your font into next/source/fonts, specify directory-name and font-name here
 # Avialable: default | linecons | fifty-shades | feather
-icon_font: default
+icon_font: default 
 #icon_font: fifty-shades
 #icon_font: feather
 #icon_font: linecons
@@ -29,7 +29,7 @@ icon_font: default
 # Code Highlight theme
 # Available value: normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night 
 
 
 # MathJax Support
@@ -58,7 +58,7 @@ toc_list_number: true
 
 # Automatically Excerpt
 auto_excerpt:
-  enable: false
+  enable: true 
   length: 150
 
 # Use Lato font
