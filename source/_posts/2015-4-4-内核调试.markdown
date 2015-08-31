@@ -1,0 +1,16 @@
+---
+layout: post
+title: How to debug the freeBSD kernel
+categories: 笔记
+tags: 远为
+---
+###内核调试
+*This is a work note when I work in YuanV* 
+
+    kgdb kernel.debug vmcore
+
+在负载上面，kernel.debug文件名字为/kernel/SECkernel
+
+使用bt查看栈
+
+使用f [num]查看对应id号的栈信息
