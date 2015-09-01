@@ -42,11 +42,11 @@ duoshuo_shortname: jasongenius
 
 # Analytics
 google_analytics:
-  enable: false
-  siteid:
+    enable: false
+    siteid:
 baidu_tongji:
-  enable: false
-  siteid:
+    enable: true 
+    siteid: 8d260eca9df72960215db17df81a430b 
 
 # search
 swiftype_key: 
