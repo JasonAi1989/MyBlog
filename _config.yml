@@ -67,7 +67,8 @@ pagination_dir: page
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
 #theme: landscape
-theme: modenist 
+#theme: modenist 
+theme: freemind
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
@@ -87,3 +88,11 @@ archive_generator:
 tag_generator:
     per_page: 10
 
+markdown:
+    gfm: true
+    pedantic: false
+    sanitize: false
+    tables: true
+    breaks: false
+    smartLists: true
+    smartypants: true
