@@ -17,6 +17,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/xueyufa.jpg
 
 把一个句子找补的部分去掉，这句话应该还是一句人话，也就是语法上正确的句子
 
+<!--more-->
+
 #### do be do句式
 其实就是一个do结尾的主语从句+be+宾语从句，其中宾语从句用to do表示，to可以被省略
 

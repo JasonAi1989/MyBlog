@@ -20,7 +20,7 @@ git push命令用于将本地分支的更新，推送到远程主机。它的格
     $ git push origin master
 
 上面命令表示，将本地的master分支推送到origin主机的master分支。如果后者不存在，则会被新建。
-
+<!--more-->
 如果省略本地分支名，则表示删除指定的远程分支，因为这等同于推送一个空的本地分支到远程分支。
 
     $ git push origin :master
