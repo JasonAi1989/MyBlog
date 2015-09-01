@@ -1,4 +1,4 @@
-slogan: "Yet another bootstrap theme."
+slogan: "Go on ..."
 
 menu:
   - title: Archives
@@ -19,16 +19,12 @@ menu:
     icon: "fa fa-user"
 
 links:
-  - title: Freemind
-    url: https://github.com/wzpan/freemind/
-    intro: "Freemind's Github repository."
-    icon: "fa fa-github"
-  - title: "My Github"
-    url: http://www.github.com/wzpan
-    intro: "My Github account."
+  - title: Jason Ai 
+    url: https://github.com/JasonAi1989 
+    intro: "My Github account"
     icon: "fa fa-github"
   - title: "My LinkedIn"
-    url: http://www.linkedin.com/in/hahack
+    url: https://www.linkedin.com/in/jasonai 
     intro: "My Linkin account."
     icon: "fa fa-linkedin"
 
@@ -41,8 +37,8 @@ widgets:
 
 rss: 
 fancybox: true
-favicon: favicon.png
-duoshuo_shortname:
+favicon: favicon.ico
+duoshuo_shortname: jasongenius
 
 # Analytics
 google_analytics:
@@ -53,4 +49,4 @@ baidu_tongji:
   siteid:
 
 # search
-swiftype_key: ZP2ZSuHgipSZfRyU8uTR
+swiftype_key: 
