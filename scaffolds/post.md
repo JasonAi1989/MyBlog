@@ -5,6 +5,4 @@ categories:
 description:
 feature:
 toc: true
-photos:
--
 ---
