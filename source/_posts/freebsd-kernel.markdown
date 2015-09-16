@@ -2,7 +2,7 @@ title: How to debug the freeBSD kernel
 toc: true
 date: 2015-09-01 14:46:42
 tags: [freeBSD]
-categories: Linux
+categories: freeBSD 
 description: This is a work note when I work in YuanV.
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png
 ---

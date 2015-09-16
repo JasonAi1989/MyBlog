@@ -1,10 +1,10 @@
 title: freebsd内核时钟
 toc: true
 date: 2015-03-06 18:31
-tags: [freebsd] [时钟]
+tags: [freeBSD] [时钟]
 categories: freeBSD
 description:
-feature:
+feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png
 ---
 
 freebsd中的ticks64相当于linux中的jiffies，记录从电脑开启至当前的所有时钟中断数
