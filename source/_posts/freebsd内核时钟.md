@@ -24,3 +24,10 @@ hz的含义是一秒内的时钟中断数
 SYSINIT(clocks, SI_SUB_CLOCKS, SI_ORDER_FIRST, initclocks, NULL);
 
 具体的初始化函数为initclocks
+
+
+此外，freeBSD中（其实这应该是公司改版后的freeBSD所特有的）还有两个定时器
+
+慢定时器：eccom_input.c : eccomtcp_slowtimo  hz / 2  0.5调用一次
+
+快定时器：eccom_input.c : eccomtcp_fasttimo  hz / 10  0.1秒调用一次
