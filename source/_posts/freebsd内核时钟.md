@@ -1,7 +1,7 @@
 title: freebsd内核时钟
 toc: true
 date: 2015-03-06 18:31
-tags: [freeBSD] [时钟]
+tags: [freeBSD, 时钟]
 categories: freeBSD
 description:
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png

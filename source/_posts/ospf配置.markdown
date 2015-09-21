@@ -1,7 +1,7 @@
 title: ospf配置
 toc: true
 date: 2015-07-09 18:31
-tags: [freeBSD] [ospf]
+tags: [freeBSD, ospf]
 categories: freeBSD
 description:
 feature:
