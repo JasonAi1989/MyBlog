@@ -8,6 +8,7 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/swift_icom.jpg
 ---
 
 
+[test.rar](http://7xj4cp.com1.z0.glb.clouddn.com/test.rar)
 ### 基础变量类型
 Int, Float, Double
 
