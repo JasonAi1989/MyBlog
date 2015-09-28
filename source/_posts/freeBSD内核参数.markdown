@@ -9,13 +9,15 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png
 
 在freeBSD的内核中有很多系统参数，比如关于网络的、关于系统参数的等等，这些参数有些我们可以直接在命令行和用户态程序中进行获取和设置，方法如下：
 
-###在命令行中获取和设置
+### 在命令行中获取和设置
 
 通过命令sysctl来获取和设置，可以通过
 
     sysctl -a
     
 来查看系统中所有的内核参数
+
+<!--more-->
 
 获取单个参数就在sysctl后面跟上这个内核参数的键，例如：
 
@@ -26,7 +28,7 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png
     systcl net.inet.eccomtcp.jpeg_quality=12
     
 ---
-###在用户态中获取和设置
+### 在用户态中获取和设置
 
 在用户态程序中获取和设置，可以通过函数sysctlbyname来完成，
 
@@ -41,7 +43,7 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/freebsd.png
     
 ---
 
-###在内核中增加一个内核参数
+### 在内核中增加一个内核参数
 
 随便在某个内核源文件中添加即可。
 
