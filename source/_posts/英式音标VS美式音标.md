@@ -7,10 +7,25 @@ description:
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
 ---
 
+[>> 英语48个音标——5长元音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%945%E9%95%BF%E5%85%83%E9%9F%B3/)
+
+[>> 英语48个音标——7短元音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%947%E7%9F%AD%E5%85%83%E9%9F%B3/)
+
+[>> 英语48个音标——8双元音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%948%E5%8F%8C%E5%85%83%E9%9F%B3/)
+
+[>> 英语48个音标——11清辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%9411%E6%B8%85%E8%BE%85%E9%9F%B3/)
+
+[>> 英语48个音标——17浊辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%9417%E6%B5%8A%E8%BE%85%E9%9F%B3/)
+
+[>> 清辅音浊化规则](http://www.jasonai.com/2015/10/10/%E6%B8%85%E8%BE%85%E9%9F%B3%E6%B5%8A%E5%8C%96%E8%A7%84%E5%88%99/)
+
+[>> 英式音标VS美式音标](http://www.jasonai.com/2015/09/29/%E8%8B%B1%E5%BC%8F%E9%9F%B3%E6%A0%87VS%E7%BE%8E%E5%BC%8F%E9%9F%B3%E6%A0%87/)
+
+[>> 英式发音VS美式发音](http://www.jasonai.com/2015/10/10/%E8%8B%B1%E5%BC%8F%E5%8F%91%E9%9F%B3VS%E7%BE%8E%E5%BC%8F%E5%8F%91%E9%9F%B3/)
+
+<!--more-->
 
 在英文中有26个英文字母，但是却又40多个音（传统音标有48个音，最新的英式音标有44个音，最新的美式音标有42个音，下面会有详细介绍），于是有了音标这种标识发音的符号。
-
-<!-- more -->
 
 ### 国际音标 (IPA)
 
