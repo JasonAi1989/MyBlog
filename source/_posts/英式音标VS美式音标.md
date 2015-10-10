@@ -2,7 +2,7 @@ title: 英式音标VS美式音标
 tags: [English]
 toc: true
 date: 2015-09-29 12:23:09
-categories:
+categories: English
 description:
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
 ---
