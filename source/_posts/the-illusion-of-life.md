@@ -1,8 +1,8 @@
 title: The illusion of life
 toc: true
 date: 2015-09-28 16:58:54
-tags: [illusion]
-categories: Video
+tags: [illusion, Video]
+categories: iOS 100 Days
 description:
 feature:
 ---
