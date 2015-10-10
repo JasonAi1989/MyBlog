@@ -3,7 +3,7 @@ tags: [English]
 toc: true
 date: 2015-09-29 12:23:09
 categories: English
-description:
+description: 此文主要讲解英式音标和美式音标的区别
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
 ---
 
@@ -24,6 +24,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
 [>> 英式发音VS美式发音](http://www.jasonai.com/2015/10/10/%E8%8B%B1%E5%BC%8F%E5%8F%91%E9%9F%B3VS%E7%BE%8E%E5%BC%8F%E5%8F%91%E9%9F%B3/)
 
 <!--more-->
+
+---
 
 在英文中有26个英文字母，但是却又40多个音（传统音标有48个音，最新的英式音标有44个音，最新的美式音标有42个音，下面会有详细介绍），于是有了音标这种标识发音的符号。
 
