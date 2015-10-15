@@ -1,6 +1,6 @@
 title: objective-c 基本数据类型
 toc: true
-date: 2015-09-05 22:15:37
+date: 2015-10-15 22:15:37
 tags: [objective-c, iOS]
 categories: iOS 100 Days
 description: 介绍objective-c中的基本数据类型
@@ -28,7 +28,7 @@ objective-c自己的基本数据类型，包括但并不只有 NSInteger, NSNumb
     
 ### NSNumber的常见操作
 
-```code
+``` 
 //创建数据类型：
 numberWithInteger
 numberWithLong
@@ -53,7 +53,7 @@ NSString被称作不可修改字符串，一旦被创建就无法再修改其长
 
 NSString是以@符开始的字符串。
 
-```code
+``` 
 //初始化实例
 NSString *str =@"我是字符串";  
 
@@ -110,7 +110,7 @@ NSMutableString是NSString类型的子类，因此所有适合于NSString的函�
 
 NSMutableString所特有的修改字符串的函数：
 
-```code
+``` 
 //创建一个字符串，容量为size大小
 +(id)stringWithCapacity:size 	
 -(id)initWithCapacity:size
@@ -145,7 +145,7 @@ NSMutableString所特有的修改字符串的函数：
 + 因为是不可变数组，所以没有插入、删除、替换等函数
 + 数组是连续的集合
 
-```code
+``` 
 //创建数组
 NSArray *array1 = [NSArray arrayWithObjects:string1,string2, nil];
 NSArray *array2 = [NSArray arrayWithArray:array1];
@@ -190,7 +190,7 @@ str = [arr componentsJoinedByString:@" , "];
 
 NSMutableArray是NSArray的子类，用来提供可被修改的数组。
 
-```code
+``` 
 //向动态数组中添加
 [myarray addObject:string3];
 [myarray addObject:string2];
@@ -219,7 +219,7 @@ NSSet是和NSArray比较相似的集合，不同点是NSSet是无序的，而NSA
 
 NSSet是无序的不可修改集合，其对元素的查找速度比NSArray快（采用hash查找）。
 
-```code
+``` 
 +(id)setWithObjects:obj1,obj2,...nil 	//使用一组对象创建新的集合
 -(id)initWithObjects:obj1,obj2,....nil 	//使用一组对象初始化新分配的集合
 -(NSUInteger)count 	                    //返回集合成员个数
@@ -235,7 +235,7 @@ NSSet是无序的不可修改集合，其对元素的查找速度比NSArray快�
 
 NSMutableSet是NSSet的子类，可以被修改。
 
-```code
+``` 
 -(id)setWithCapcity:size 	//创建一个有size大小的新集合
 -(id)initWithCapcity:size 	//初始化一个新分配的集合，大小为size
 -(void)addObject:obj 	    //添加对象 obj 到集合中
@@ -250,5 +250,72 @@ NSMutableSet是NSSet的子类，可以被修改。
 
 NSDictionary可以将数据以键值对儿的形式储存起来，取值的时候通过KEY就可以直接拿到对应的值，非常方便。
 
+和NSSet一样，NSDictionary也是无序的。
+
+``` 
+//创建字典
+NSDictionary *dic1 = [NSDictionary dictionaryWithObject:@"value" forKey:@"key"];
+NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:  
+                              @"value1", @"key1",  
+                              @"value2", @"key2",  
+                              @"value3", @"key3",  
+                              @"value4", @"key4",  
+                              nil]; 
+NSDictionary *dic3 = [NSDictionary dictionaryWithDictionary:dic2];                       
+
+//根据key获取value  
+[dic3 objectForKey:@"key3"]
+                              
+//获取字典数量                               
+dic3.count   
+
+//所有的键集合 
+NSArray *keys = [dic3 allKeys];      
+
+//所有值集合  
+NSArray *values = [dic3 allValues];                        
+                              
+```
 
 ### NSMutableDictionary的常见操作
+
+NSMutableDictionary是可以被修改的字典类型。
+
+```
+//创建字典
+NSMutableDictionary *dictMutable = [[NSMutableDictionary alloc] initWithObjectsAndKeys:m_array,@"sort",n_array,@"number", nil];  
+ 
+//修改对象  
+[dictMutable setObject:string4 forKey:@"sort"];  
+
+//删除对象  
+[dictMutable removeObjectForKey:@"number"];  
+
+//删除多个对象  
+NSArray *key_array =[NSArray arrayWithObjects:@"sort",@"number", nil];  
+[dictMutable removeObjectForKey:key_array];  
+
+//删除所有对象  
+[dictMutable removeAllObjects];
+
+```
+
+### 三种集合类型
+
+NSArray, NSSet, NSDictionary这三种集合类型（以及相应的可变类型）很相似，下面是这三种集合类型大体上的异同。
+
+相同点：
+
++ 元素只能是对象类型，不能是int等基础类型，如果要使用如int等基础类型，需要使用NSNumber进行转换后使用
+
++ 一个集合里面的元素可以是不同类型的。
+
++ 都是不可变类型，并都有对应的可变类型的子类
+
+不同点：
+
++ NSArray中的元素是有序排列，而NSSet, NSDictionary中的元素是无序排列
+
++ NSArray可以通过下标索引对应的值，NSSet只能通过便利索引对应的值，NSDictionary可以通过key进行索引
+
++ NSSet类型更适合做集合的操作，如求交集／并集等
