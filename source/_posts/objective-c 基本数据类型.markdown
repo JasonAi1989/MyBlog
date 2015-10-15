@@ -12,6 +12,8 @@ objective-c兼容c的基本数据类型，包括 int, short, long, double, float
 
 objective-c自己的基本数据类型，包括但并不只有 NSInteger, NSNumber, NSString, NSArray, NSSet, NSDictionary。
 
+<!--more-->
+
 **Tips 1**
 
     NSInteger和NSNumber都表示整数，但前者是long的封装，而后者是类。在有些情况下只能使用NSNumber的这种整数类型。
