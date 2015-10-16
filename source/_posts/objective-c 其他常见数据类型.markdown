@@ -15,6 +15,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 
 NSRange是一个结构体，其中location是一个以0为开始的index，length是表示对象的长度。他们都是NSUInteger类型。
 
+<!--more-->
+
 NSRange的定义如下：
 
 ```
