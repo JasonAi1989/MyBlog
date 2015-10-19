@@ -95,11 +95,11 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 
 对整个工程取消使用ARC模式，可以将项目编译设置中的“Objectice-C Auto Reference Counteting”设为NO，如下所示。
 
-![Cancle ARC]()
+![Cancle ARC](http://7xj4cp.com1.z0.glb.clouddn.com/arc_no.png)
 
 如果只是想给特定的文件取消ARC模式，可以只针对该类文件加上 -fno-objc-arc 编译FLAGS，如下图。
 
-![Cancle ARC single]()
+![Cancle ARC single](http://7xj4cp.com1.z0.glb.clouddn.com/arc_no_single.png)
 
 + 打开ARC：-fobjc-arc
 
