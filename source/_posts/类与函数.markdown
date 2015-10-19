@@ -1,0 +1,105 @@
+title: 类与函数
+toc: true
+date: 2015-10-19 22:15:37
+tags: [objective-c, iOS]
+categories: iOS 100 Days
+description: 
+feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
+---
+
+### 类
+
+类声明的格式为：
+
+```
+@interface ClassName:superClassName
+
+@end
+```
+
+类实现的格式为：
+
+```
+@implementation ClassName
+
+@end
+```
+
+下图为类声明的语法展示：
+
+![Class interface](http://7xj4cp.com1.z0.glb.clouddn.com/classAndMethod.png)
+
+类中的变量部分和方法部分的声明方式与其他语言不一样，类中的变量需要写在大括号内。
+
+### 函数（方法）
+
+在objective-c中，函数（方法）的声明和其他语言中函数的声明有较大不同，在oc中，函数中除了第一个参数外，每个参数都需要一个参数名字，这个参数名字主要用于告诉使用者此参数的含义，这个参数名字不会在实现中被实际的调用，调用时使用的还是对应的参数。
+
+下面为参数声明的语法展示：
+
+![method](http://7xj4cp.com1.z0.glb.clouddn.com/method.jpg)
+
+函数的声明：
+
+```
+@interface Student : NSObject  
+{  
+    NSString *studentName;  
+    NSInteger age;  
+}  
+  
+-(void) printInfo;  
+-(void) setStudentName: (NSString*) name;  
+-(void) setAge: (NSInteger) age;  
+-(NSString*) studentName;  
+-(NSInteger) age;  
+@end  
+```
+
+函数的实现：
+
+```
+@implementation Student  
+  
+-(void) printInfo  
+{  
+    NSLog(@"姓名：%@ 年龄：%d岁",studentName,studentAge);  
+}  
+-(void) setStudentName: (NSString*) name  
+{  
+    studentName = name;  
+}  
+-(void) setAge: (NSInteger) age  
+{  
+    studentAge = age;  
+}  
+-(NSString*) studentName  
+{  
+    return studentName;  
+}  
+-(NSInteger) age  
+{  
+    return studentAge;  
+}  
+  
+@end
+```
+
+### 类中变量的访问权限
+
+类中的**变量**有三种访问权限，分别为@public, @protected, @private,默认是@protected。
+
+这三个关键字对应的权限如下：
+
+![class access](http://7xj4cp.com1.z0.glb.clouddn.com/classAccess.png)
+
+
+
+
+
+
+
+
+
+
+
