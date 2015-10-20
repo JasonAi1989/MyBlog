@@ -9,6 +9,7 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 
 ObjC中的Block是对闭包的实现，而闭包的主要作用就是实现c语言中的回调函数的特性。说到回调函数的特性，protocol+委托功能不也是对回调函数的一种实现嘛，所以在某些场合Block是能替换protocol+委托功能，但如果要实现的方法比较多还是用protocol+委托的方式来实现吧。
 
+<!--more-->
 KCButton.h
 
 ```
