@@ -9,35 +9,9 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 
 ### 其他常见数据类型
 
-这里介绍几个其他几个常见的数据类型，包括 NSRange, NSEnumerator, NSData, NSDate, 
+这里介绍几个其他几个常见的数据类型，包括 NSEnumerator, NSData, NSDate等。
 
-### NSRange
-
-NSRange是一个结构体，其中location是一个以0为开始的index，length是表示对象的长度。他们都是NSUInteger类型。
-
-<!--more-->
-
-NSRange的定义如下：
-
-```
-typedef struct _NSRange
-
-{
-
-  NSUInteger location;
-
-  NSUInteger length;
-
-} NSRange;
-```
-
-NSRange变量的创建
-
-```
-NSRange range = NSMakeRange (25, 3);
-
-NSRange range = {25, 3};
-```
+常用的结构体有NSRange、NSPoint、NSSize、NSRect等。
 
 ### NSEnumerator
 
@@ -99,6 +73,123 @@ Designated Initializer
 description
 - descriptionWithLocale:
 ```
+
+代码举例：
+
+```
+#import <Foundation/Foundation.h>
+
+int main(int argc, const char * argv[]) {
+    
+    //获得当前日期
+    NSDate *date1=[NSDate date];
+    NSLog(@"%@",date1); 
+    
+    //在当前日期的基础上加上100秒，注意在ObjC中多数时间单位都是秒
+    NSDate *date2=[NSDate dateWithTimeIntervalSinceNow:100];
+    NSLog(@"%@",date2); 
+    
+    //随机获取一个将来的日期
+    NSDate *date3=[NSDate distantFuture];
+    NSLog(@"%@",date3);
+    
+    //日期之差,返回单位为秒
+    NSTimeInterval time=[date2 timeIntervalSinceDate:date1];
+    NSLog(@"%f",time); 
+    
+    //返回比较早的日期
+    NSDate *date5=[date1 earlierDate:date3];
+    NSLog(@"%@",date5); 
+    
+    //日期格式化
+    NSDateFormatter *formater1=[[NSDateFormatter alloc]init];
+    formater1.dateFormat=@"yy-MM-dd HH:mm:ss";
+    NSString *datestr1=[formater1 stringFromDate:date1];
+    NSLog(@"%@",datestr1); 
+    
+    //字符串转化为日期
+    NSDate *date6=[formater1 dateFromString:@"14-02-14 11:07:16"];
+    NSLog(@"%@",date6);
+
+    return 0;
+}
+```
+
+### 常用结构体
+
+下面用一段代码来解释常用的四种结构体。
+
+```
+#import <Foundation/Foundation.h>
+
+/*NSRange表示一个范围，(arg1, arg2) => (location, length)*/
+void test1(){
+    NSRange rg1={3,5};
+
+    NSRange rg2;
+    rg2.location=3;
+    rg2.length=5;
+
+    NSRange rg3={.location=3,.length=5};
+
+    //常用下面的方式定义 
+    NSRange rg4=NSMakeRange(3,5);
+    
+    //打印NSRange可以使用Foundation中方法 
+    NSLog(@"rg2 is %@", NSStringFromRange(rg4));
+    
+    //注意不能直接NSLog(@"rg4 is %@", rg4)，因为rg4不是对象（准确的说%@是指针）而是结构体
+}
+
+/*NSPoint表示一个点, (arg1, arg2) => (x, y)*/
+void test2(){
+    NSPoint p=NSMakePoint(10, 15);
+    
+    //NSPoint其实就是CGPoint
+    //这种方式比较常见 
+    CGPoint p2=CGPointMake(10, 15);
+    
+    NSLog(NSStringFromPoint(p2));
+}
+
+/*NSSize表示大小, (arg1, arg2) => (width, height)*/
+void test3(){
+    NSSize s=NSMakeSize(10, 15);
+    
+    //NSSize其实就是CGSize
+    //这种方式比较常见 
+    CGSize s2=CGSizeMake(10, 15);
+
+    NSLog(NSStringFromSize(s2));
+}
+
+/*NSRect表示一个矩形, (arg1, arg2, arg3, arg4) => (x, y, width, height)*/
+void test4(){
+    NSRect r=NSMakeRect(10, 5, 100, 200);
+    
+    //NSRect其实就是CGRect
+    //这种方式比较常见 
+    CGRect r2=CGRectMake(10, 5, 100, 200);
+
+    NSLog(NSStringFromRect(r2));
+}
+
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        test1();
+        test2();
+        test3();
+        test4();
+    } return 0;
+}
+```
+
+**Tips**
+
+    1.对于常用结构体在Foundation框架中都有一个对应的make方法进行创建；
+    2.对应的还都有一个NSStringFromXX方法来进行字符串转换，方便我们调试；
+    3.结构体类型的变量不能用"*"来接收；
+
 
 ### 官方文档
 
