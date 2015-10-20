@@ -12,6 +12,7 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 protocol是objective-c中的一种约定，他不是类，只是在其声明中约定了相关的方法，然后再由遵守约定的类对其方法进行实现。
 
 因为protocol不是类，所以本身没有对方法的实现，需要protocol的遵守者进行实现。
+<!--more-->
 
 ### protocol的使用方法
 

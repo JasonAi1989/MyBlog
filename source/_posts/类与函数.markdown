@@ -17,6 +17,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 @end
 ```
 
+<!--more-->
+
 类实现的格式为：
 
 ```

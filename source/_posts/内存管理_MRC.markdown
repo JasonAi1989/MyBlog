@@ -1,4 +1,4 @@
-title: objective-c 内存管理
+title: objective-c 内存管理 —— MRC
 toc: true
 date: 2015-10-20 22:15:37
 tags: [objective-c, iOS]
@@ -14,6 +14,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 在每个对象中都有一个retainCount的变量用来对对象的引用进行计数。
 
 可以增加retainCount的方法有：
+
+<!--more-->
 
 + alloc
 + retain
@@ -84,54 +86,6 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
     2.copy，通常用于字符串对象、block、NSArray、NSDictionary
     
 当给一个属性变量赋值一个对象时，不需要再手动的调用retain方法给这个对象的引用计数+1，但是仍需要使用release方法进行释放。
-
-### ARC 自动引用计数
-
-简单地说，就是代码中自动加入了retain/release，原先需要手动添加的用来处理内存管理的引用计数的代码可以自动地由编译器完成了。
-
-该机能在 iOS 5/ Mac OS X 10.7 开始导入，利用 Xcode4.2 可以使用该机能。简单地理解ARC，就是通过指定的语法，让编译器(LLVM 3.0)在编译代码时，自动生成实例的引用计数管理部分代码。有一点，ARC并不是GC，它只是一种代码静态分析（Static Analyzer）工具。
-
-在4.2版本之后的Xcode中，当创建项目时会自动使用ARC模式。
-
-对整个工程取消使用ARC模式，可以将项目编译设置中的“Objectice-C Auto Reference Counteting”设为NO，如下所示。
-
-![Cancle ARC](http://7xj4cp.com1.z0.glb.clouddn.com/MRC.png)
-
-如果只是想给特定的文件取消ARC模式，可以只针对该类文件加上 -fno-objc-arc 编译FLAGS，如下图。
-
-![Cancle ARC single](http://7xj4cp.com1.z0.glb.clouddn.com/MRC_single.png)
-
-+ 打开ARC：-fobjc-arc
-
-+ 关闭ARC：-fno-objc-arc
-
-在非ARC模式下需要遵守的内存管理规则是：（采用autorelease方式）
-
-+ 生成对象时，使用autorelease
-+ 对象代入时，先autorelease后再retain
-+ 对象在函数中返回时，使用return [[object retain] autorelease];
-
-而使用ARC后，我们可以不需要这样做了，甚至连最基础的release都不需要了。
-
-在ARC模式下内存管理的基本规则:
-
-+ retain, release, autorelease, dealloc由编译器自动插入，不能在代码中调用
-+ dealloc虽然可以被重载，但是不能调用[super dealloc]
-
-使用ARC模式的好处：
-
-+ 代码变得简单多了，因为我们不需要担心烦人的内存管理，担心内存泄露了
-+ 代码的总量变少了，看上去清爽了不少，也节省了劳动力
-+ 代码高速化，由于使用编译器管理引用计数，减少了低效代码的可能性
-
-使用ARC模式的坏处：
-
-+ 记住一堆新的ARC规则，关键字及特性等需要一定的学习周期
-+ 一些旧的代码，第三方代码使用的时候比较麻烦；修改代码需要时间，要么修改编译开关
-
-关于第二点，由于 XCode4.2 中缺省ARC就是 ON 的状态，所以编译旧代码的时候往往有"Automatic Reference Counting Issue"的错误信息。
-
-### ARC修饰符
 
 
 

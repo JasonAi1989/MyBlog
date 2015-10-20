@@ -15,6 +15,8 @@ extension是可以看作是一种匿名的category方式，具体异同会在后
 
 继承（inherit）是通过实现子类来对父类尽兴扩展。
 
+<!--more-->
+
 ### category的使用方法
 
 头文件中的声明方式
