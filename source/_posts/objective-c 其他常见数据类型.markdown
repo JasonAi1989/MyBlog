@@ -13,6 +13,8 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
 
 常用的结构体有NSRange、NSPoint、NSSize、NSRect等。
 
+<!--more-->
+
 ### NSEnumerator
 
 NSEnumerator是一个抽象类，这个类型的实例只能通过集合类型变量的相关方法进行初始化。简单的说，这个类型本身没有初始化函数，需要通过集合类型（NSArray, NSSet, NSDictionary）中的相关方法进行初始化。
