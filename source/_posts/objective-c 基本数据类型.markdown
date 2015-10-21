@@ -49,6 +49,133 @@ compare
 NSNumber *number = [[NSNumber alloc] initWithInt:1000];  
 ```
 
+使用NSNumber可以进行装箱和拆箱操作。
+
+装箱：将c语言中的基础数据类型封装到NSNumber类型中，从而使基础数据类型以对象的形式存在。
+
+拆箱：和装箱的操作相反，将NSNumber对象中的基础数据分离出来。
+
+常用装箱操作的方法：
+
+```
++(NSNumber *)numberWithChar:(char)value;
+
++(NSNumber *)numberWithInt:(int)value;
+
++(NSNumber *)numberWithFloat:(float)value;
+
++(NSNumber *)numberWithDouble:(double)value;
+
++(NSNumber *)numberWithBool:(BOOL)value;
+
++(NSNumber *)numberWithInteger:(NSInteger)value;
+```
+
+常见拆箱操作的方法：
+
+```
+-(char)charValue;
+
+-(int)intValue;
+
+-(float)floatValue;
+
+-(double)doubleValue;
+
+-(BOOL)boolValue;
+```
+
+除了c语言中的基本数据类型类型外，经常需要进行装箱、拆箱操作的还有结构体，但是结构体的装箱和拆箱不能使用NSNumber类型，而是要使用NSValue类，其实NSNumber类就是NSValue类的子类。
+
+NSValue中用于装箱操作的方法：
+
+```
++(NSValue *)valueWithPoint:(NSPoint)point;
+
++(NSValue *)valueWithSize:(NSSize)size;
+
++(NSValue *)valueWithRect:(NSRect)rect;
+```
+
+NSValue中用于拆箱操作的方法：
+
+```
+-(NSPoint)pointValue;
+
+-(NSSize)sizeValue;
+
+-(NSRect)rectValue;
+```
+
+NSPoint，NSSize，NSRect这几个结构体会在另一篇文章中介绍详细使用方法。
+
+除了这些已经定义好的结构体外我们还能对自定义的结构体进行装箱、拆箱操作。
+
+对自定义结构体进行装箱：
+
+```
++(NSValue *)valueWithBytes:(const void *)value objCType:(const char *)type;
+```
+
+对自定义的结构体进行拆箱：
+
+```
+-(void)getValue:(void *)value;
+```
+
+例如：
+
+```
+#import <Foundation/Foundation.h>
+
+typedef struct {
+    int year;
+    int month;
+    int day;
+} Date;
+
+
+//NSNumber是NSValue的子类，而NSValue可以包装任何类型，包括结构体
+void test1(){
+    //如果我们自己定义的结构体包装
+    Date date={2014,2,28};
+    char *type=@encode(Date);
+    
+    //第一参数传递结构体地址，第二个参数传递类型字符串
+    NSValue *value3=[NSValue value:&date withObjCType:type];
+    NSArray *array2=[NSArray arrayWithObject:value3];
+    NSLog(@"%@",array2);
+    /*结果：
+     (
+        "<de070000 02000000 1c000000>"
+     )
+     */
+    
+    Date date2;
+    [value3 getValue:&date2];//取出对应的结构体，注意没有返回值
+    //[value3 objCType]//取出包装内容的类型
+    NSLog(@"%i,%i,%i",date2.year,date2.month,date2.day); //结果：2014,2,28
+    
+}
+
+
+int main(int argc, const char * argv[]) {
+    test1();
+    return  0;
+}
+```
+
+在新版的ObjC中增加了一种简单的装箱方式——@。使用@可以进行快速的装箱操作。
+
+```
+NSNumber *number1=@100;
+NSNumber *number2=@(1+2*3);
+NSArray *array2=@[@"abc",@16,@'A',@16.7,@YES];//使用这种方式最后不用添加nil值了
+NSDictionary *dic1=@{@"a":@123,@"b":@'c',@"c":@YES};
+NSMutableDictionary *dic2=[NSMutableDictionary dictionaryWithDictionary:dic1];
+dic2[@"a"]=@456;
+```
+
 ### NSString的常见操作
 
 NSString被称作不可修改字符串，一旦被创建就无法再修改其长度和内容。
@@ -254,6 +381,8 @@ NSDictionary可以将数据以键值对儿的形式储存起来，取值的时�
 
 和NSSet一样，NSDictionary也是无序的。
 
+NSDictionary的最后一个元素也需要使nil
+
 ``` 
 //创建字典
 NSDictionary *dic1 = [NSDictionary dictionaryWithObject:@"value" forKey:@"key"];
@@ -321,3 +450,13 @@ NSArray, NSSet, NSDictionary这三种集合类型（以及相应的可变类型�
 + NSArray可以通过下标索引对应的值，NSSet只能通过便利索引对应的值，NSDictionary可以通过key进行索引
 
 + NSSet类型更适合做集合的操作，如求交集／并集等
+
+### NSNull
+
+前文已经说的，数组和字典的最后一个元素需要使nil，但有时我们需要在数组或者字典里面存储nil类型元素，这个时候为了不和数组、字典结尾的nil混淆，我们可以使用NSNull类型，示例如下：
+
+```
+NSNull *nl=[NSNull null];//注意这是一个对象，是一个单例，只有一个方法null创建一个对象
+
+NSArray *array1=[NSArray arrayWithObjects:@"abc",nl,@123, nil];
+```

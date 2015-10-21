@@ -1,0 +1,268 @@
+title: Objective-c 文件操作
+toc: true
+date: 2015-10-22 22:15:37
+tags: [objective-c, iOS]
+categories: iOS 100 Days
+description: 
+feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
+---
+
+
+直接贴代码。
+
+<!--more-->
+
+```
+#import <Foundation/Foundation.h>
+
+/*目录操作*/
+void test1(){
+    //文件管理器是专门用于文件管理的类
+    NSFileManager *manager=[NSFileManager defaultManager];
+    
+    //获得当前程序所在目录(当然可以改变)
+    NSString *currentPath=[manager currentDirectoryPath];
+    NSLog(@"current path is :%@",currentPath);
+    //结果：/Users/jason/Library/Developer/Xcode/DerivedData/FoundationFramework-awxjohcpgsqcpsanqofqogwbqgbx/Build/Products/Debug
+    
+    //创建目录
+    NSString *myPath=@"/Users/jason/Desktop/myDocument";
+    BOOL result= [manager createDirectoryAtPath:myPath withIntermediateDirectories:YES attributes:nil error:nil];
+    if(result==NO){
+        NSLog(@"Couldn't create directory!");
+    }
+    
+    //目录重命名，如果需要删除目录只要调用removeItemAtPath:<#(NSString *)#> error:<#(NSError **)#>
+    NSError *error;
+    NSString *newPath=@"/Users/jason/Desktop/myNewDocument";
+    if([manager moveItemAtPath:myPath toPath:newPath error:&error]==NO){
+        NSLog(@"Rename directory failed!Error infomation is:%@",error);
+    }
+    
+    //改变当前目录
+    if([manager changeCurrentDirectoryPath:newPath]==NO){
+        NSLog(@"Change current directory failed!");
+    }
+    NSLog(@"current path is :%@",[manager currentDirectoryPath]);
+    //结果：current path is :/Users/jason/Desktop/myNewDocument
+    
+    //遍历整个目录
+    NSString *path;
+    NSDirectoryEnumerator *directoryEnumerator= [manager enumeratorAtPath:newPath];
+    while (path=[directoryEnumerator nextObject]) {
+        NSLog(@"%@",path);
+    }
+    /*结果：
+     documents
+     est.txt
+    */
+    
+    //或者这样遍历
+    NSArray *paths= [manager contentsOfDirectoryAtPath:newPath error:nil];
+    NSObject *p;
+    for (p in paths) {
+        NSLog(@"%@",p);
+    }
+    /*结果：
+     documents
+     est.txt
+     */
+}
+
+/*文件操作*/
+void test2(){
+    NSFileManager *manager=[NSFileManager defaultManager];
+    NSString *filePath=@"/Users/jason/Desktop/myNewDocument/test.txt";
+    NSString *filePath2=@"/Users/jason/Desktop/test.txt";
+    NSString *newPath=@"/Users/jason/Desktop/myNewDocument/test2.txt";
+    
+    //判断文件是否存在，这个方法也可以判断目录是否存在，这要后面的参数设置位YES
+    if ([manager fileExistsAtPath:filePath isDirectory:NO]) {
+        NSLog(@"File exists！");
+    }
+    
+    //文件是否可读
+    if([manager isReadableFileAtPath:filePath]){
+        NSLog(@"File is readable!");
+    }
+    
+    //判断两个文件内容是否相等
+    if ([manager contentsEqualAtPath:filePath andPath:filePath2]) {
+        NSLog(@"file1 equals file2");
+    }
+    
+    //文件重命名，方法类似于目录重命名
+    if (![manager moveItemAtPath:filePath toPath:newPath error:nil]) {
+        NSLog(@"Rename file1 failed!");
+    }
+    
+    //文件拷贝
+    NSString *filePath3=@"/Users/jason/Desktop/test3.txt";
+    if(![manager copyItemAtPath:newPath toPath:filePath3 error:nil]){
+        NSLog(@"Copy failed!");
+    }
+    
+    //读取文件属性
+    NSDictionary *attributes;
+    if ((attributes=[manager attributesOfItemAtPath:newPath error:nil])==nil) {
+        NSLog(@"Read attributes failed!");
+    }
+    for (NSObject *key in attributes) {
+        NSLog(@"%@=%@",key,attributes[key]);
+    }
+    /*结果：
+         NSFileOwnerAccountID=501
+         NSFileHFSTypeCode=0
+         NSFileSystemFileNumber=1781953
+         NSFileExtensionHidden=0
+         NSFileSystemNumber=16777218
+         NSFileSize=27
+         NSFileGroupOwnerAccountID=20
+         NSFileOwnerAccountName=jason
+         NSFileCreationDate=2014-07-28 11:47:58 +0000
+         NSFilePosixPermissions=420
+         NSFileHFSCreatorCode=0
+         NSFileType=NSFileTypeRegular
+         NSFileExtendedAttributes={
+         "com.apple.TextEncoding" = <7574662d 383b3133 34323137 393834>;
+         }
+         NSFileGroupOwnerAccountName=staff
+         NSFileReferenceCount=1
+         NSFileModificationDate=2014-07-28 11:47:58 +0000
+     */
+    
+    //删除文件
+    [manager removeItemAtPath:newPath error:nil];
+    
+}
+//文件操作--文件内容操作（NSData，非结构化字节流对象，有缓冲区管理机制，可用于网络传输）
+void test3(){
+    NSFileManager *manager=[NSFileManager defaultManager];
+    NSString *filePath=@"/Users/jason/Desktop/myNewDocument/test2.txt";
+    NSData *data=[manager contentsAtPath:filePath];
+    NSLog(@"%@",data);//存储的是二进制字节流
+    //结果:<68656c6c 6f20776f 726c642c e4b896e7 958ce4bd a0e5a5bd efbc81>
+    
+    //NSData转化成字符串
+    NSString *str1=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",str1);
+    //结果：hello world,世界你好！
+    
+    //字符串转化成NSData
+    NSString *str2=@"Kenshin";
+    NSData *data2=[str2 dataUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"%@",data2);
+    
+    //当然一般如果仅仅是简单读取文件内容，直接用户NSString方法即可
+    NSString *content=[NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    NSLog(@"%@",content);
+    //结果：hello world,世界你好！ 
+}
+//文件操作--细粒度控制文件,文件操作柄
+void test4(){
+    NSFileManager *manager=[NSFileManager defaultManager];
+    NSString *filePath=@"/Users/jason/Desktop/myNewDocument/test2.txt";
+    
+    //以只读方式打开文件
+    NSFileHandle *fileHandle=[NSFileHandle fileHandleForReadingAtPath:filePath];//注意这个方法返回类型为instancetype，也就是说对于上面的NSFileHandle它的返回类型也是NSFileHandle
+    NSData *data= [fileHandle readDataToEndOfFile];//完整读取文件
+    NSString *newPath=@"/Users/jason/Desktop/test4.txt";
+    [manager createFileAtPath:newPath contents:nil attributes:nil];
+    NSFileHandle *fileHandle2=[NSFileHandle fileHandleForWritingAtPath:newPath];//以可写方式打开文件
+    [fileHandle2 writeData:data];//写入文件内容
+    
+    [fileHandle2 closeFile];//关闭文件
+        
+    //定位到指定位置,默认在文件开头
+    [fileHandle seekToFileOffset:12];
+    NSData *data2= [fileHandle readDataToEndOfFile];
+    NSLog(@"data2=%@",[[NSString alloc]initWithData:data2 encoding:NSUTF8StringEncoding]);
+    //结果：data2=世界你好！
+    
+    [fileHandle seekToFileOffset:6];
+    NSData *data3=[fileHandle readDataOfLength:5];
+    NSLog(@"data3=%@",[[NSString alloc]initWithData:data3 encoding:NSUTF8StringEncoding]);
+    //结果：data3=world
+    
+    [fileHandle closeFile];
+    
+}
+
+//文件路径
+void test5(){
+    NSString *filePath=@"/Users/jason/Desktop/myDocument";
+    NSString *filePath2=@"/Users/jason/Desktop/test.txt";
+
+    //临时文件所在目录
+    NSString *path=NSTemporaryDirectory();
+    NSLog(@"temporary directory is :%@",path);
+    //结果：/var/folders/h6/lss6gncs509c2pgzgty3wd_40000gn/T/
+
+    NSString *lastComponent= [filePath lastPathComponent];
+    NSLog(@"%@",lastComponent); //结果：myDocument
+    
+    NSLog(@"%@",[filePath stringByDeletingLastPathComponent]);
+    //结果：/Users/jason/Desktop
+    NSLog(@"%@",[filePath stringByAppendingPathComponent:@"Pictrues"]);
+    //结果：/Users/jason/Desktop/myDocument/Pictrues
+    NSLog(@"%@",[filePath2 pathExtension]);
+    //结果：txt
+    
+    [[filePath pathComponents] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSLog(@"%i=%@",idx,obj);
+    }];
+    /*结果：
+     0=/
+     1=Users
+     2=jason
+     3=Desktop
+     4=myDocument
+     */   
+}
+
+//文件操作--NSURL
+void test6(){
+    NSURL *url=[NSURL URLWithString:@"http://developer.apple.com"];
+    NSString *str1=[NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    NSLog(@"%@",str1);
+}
+
+//文件操作--NSBundle，程序包，一般用于获取Resource中的资源（当然由于当前并非IOS应用没有程序包，只是表示当前程序运行路径）
+//在ios中经常用于读取应用程序中的资源文件，如图片、声音、视频等
+void test7(){
+    //在程序包所在目录创建一个文件
+    NSFileManager *manager=[NSFileManager defaultManager];
+    NSString *currentPath=[manager currentDirectoryPath];
+    NSLog(@"current path is :%@",currentPath);
+    //结果：current path is :/Users/jason/Library/Developer/Xcode/DerivedData/FoundationFramework-awxjohcpgsqcpsanqofqogwbqgbx/Build/Products/Debug
+    NSString *filePath=[currentPath stringByAppendingPathComponent:@"test.txt"];
+    [manager createFileAtPath:filePath contents:[@"Hello,world!" dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];    
+    
+    //利用NSBundle在程序包所在目录查找对应的文件
+    NSBundle *bundle=[NSBundle mainBundle];//主要操作程序包所在目录
+    //如果有test.txt则返回路径，否则返回nil
+    NSString *path=[bundle pathForResource:@"test" ofType:@"txt"];//也可以写成：[bundle pathForResource:@"instructions.txt" ofType:nil];
+    NSLog(@"%@",path);
+    //结果：/Users/jason/Library/Developer/Xcode/DerivedData/FoundationFramework-awxjohcpgsqcpsanqofqogwbqgbx/Build/Products/Debug/test.txt
+    NSLog(@"%@",[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil]);
+    //结果：Hello,world!
+    
+    //假设我们在程序运行创建一个Resources目录，并且其中新建pic.jpg，那么用下面的方法获得这个文件完整路径
+    NSString *path1= [bundle pathForResource:@"pic" ofType:@"jpg" inDirectory:@"Resources"];
+    NSLog(@"%@",path1);
+    //结果：/Users/jason/Library/Developer/Xcode/DerivedData/FoundationFramework-awxjohcpgsqcpsanqofqogwbqgbx/Build/Products/Debug/Resources/pic.jpg
+}
+
+int main(int argc,char *argv[]){
+
+    test1();
+    test2();
+    test3();
+    test4();
+    test5();
+    test6();
+    test7();
+    
+    return 0;
+}
+```

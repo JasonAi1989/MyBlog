@@ -1,0 +1,293 @@
+title: Objective-c 归档与解档
+toc: true
+date: 2015-10-23 22:15:37
+tags: [objective-c, iOS]
+categories: iOS 100 Days
+description: 
+feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
+---
+
+归档，在其他语言中又叫“序列化”，就是将对象保存到硬盘；解档，在其他语言又叫“反序列化”就是将硬盘文件还原成对象。其实归档就是数据存储的过程，在IOS中数据的存储有五种方式：
+
+    1.xml属性列表（plist归档）
+
+    2.NSKeyedArchiver归档（加密形式）
+
+    3.NSUserDefaults（偏好设置）
+
+    4.SQLite3(嵌入式数据库)
+
+    5.Core Data（面向对象方式的嵌入式数据库）
+
+<!--more-->
+
+当然关于3、4、5点不是我们今天介绍的重点，这个在IOS开发过程中我们会重点说到。
+
+### xml属性列表
+
+首先我们先来看一下xml属性列表，xml属性列表进行归档的方式是将对象存储在一个plist文件中，这个操作起来比较简单，其实相当于xml序列化。但是同时它也有缺点：一是这种方式是明文保存的；二是这种方式操作的对象有限，只有NSArray、NSMutableArray、NSDictionary、NSMutableDictionary支持（归档时只要调用对应的writeToFile方法即可，解档调用arrayWithContentsOfFile或dictionaryWithContentsOfFile，注意像NSString、NSNumber、NSData即使有这个方法它存储的也不是xml格式）。
+
+```
+#import <Foundation/Foundation.h>
+
+//xml属性
+void test1(){
+    //数组
+    NSString *path=@"/Users/jason/Desktop/arrayXml.plist";
+    NSArray *array1=@[@"Kenshin",@"Kaoru",@"Rosa"];
+    [array1 writeToFile:path atomically:YES];
+    
+    NSArray *array2=[NSArray arrayWithContentsOfFile:path];
+    [array2 enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSLog(@"array2[%lu]=%@",idx,obj);
+    }];
+    /*结果：
+     array1[0]=Kenshin
+     array1[1]=Kaoru
+     array1[2]=Rosa
+     */
+      
+    //字典
+    NSString *path2=@"/Users/jason/Desktop/dicXml.plist";
+    NSDictionary *dic1=@{@"name":@"Kenshin",@"age":@28,@"height":@172.5};
+    [dic1 writeToFile:path2 atomically:YES];
+    
+    NSDictionary *dic2=[NSDictionary dictionaryWithContentsOfFile:path2];
+    [dic2 enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSLog(@"dic2[%@]=%@",key,obj);
+    }];
+    /*结果：
+     dic2[height]=172.5
+     dic2[age]=28
+     dic2[name]=Kenshin
+     */
+}
+
+int main(int argc,char *argv[]){
+    
+    test1();
+    
+    return 0;
+}
+```
+
+生成的文件如下：
+
+
+![array plist](http://7xj4cp.com1.z0.glb.clouddn.com/array.png)
+
+![dictionary plist](http://7xj4cp.com1.z0.glb.clouddn.com/dictionary.png)
+
+### NSKeyedArchiver归档
+
+如果要针对更多对象归档或者需要归档时能够加密的话就需要使用NSKeyedArchiver进行归档和解档，使用这种方式归档的范围更广而且归档内容是密文存储。从归档范围来讲NSKeyedArchiver适合所有ObjC对象，但是对于自定义对象我们需要实现NSCoding协议；从归档方式来讲NSKeyedArchiver分为简单归档和复杂对象归档，简单归档就是针对单个对象可以直接将对象作为根对象（不用设置key），复杂对象就是针对多个对象，存储时不同对象需要设置不同的Key。
+
+首先看一下系统对象两种归档方式（注意由于本章主要介绍Foundation内容，下面的程序是OS X命令行程序并没有创建成iOS应用，如果移植到到iOS应用下运行将NSArchiver和NSUnarchiver换成NSKeyedArchiver和NSKeyedUnarchiver。虽然在Foundation部分iOS和OS X在设计上尽可能通用但是还存在着细微差别。）
+
+```
+#import <Foundation/Foundation.h>
+
+//系统对象简单归档
+void test1(){
+    //NSString归档
+    NSString *str1=@"Hello,world!";
+    NSString *path1=@"/Users/jason/Desktop/archiver1.arc";
+    if(![NSArchiver archiveRootObject:str1 toFile:path1]){
+        NSLog(@"archiver failed!");
+    }
+    //NSString解档
+    NSString *str2= [NSUnarchiver unarchiveObjectWithFile:path1];
+    NSLog(@"str2=%@",str2);//结果：str2=Hello,world!
+    
+    
+    //NSArray归档
+    NSString *path2=@"/Users/jason/Desktop/archiver2.arc";
+    NSArray *array1=@[@"Kenshin",@"Kaoru",@"Rosa"];
+    if(![NSArchiver archiveRootObject:array1 toFile:path2]){
+        NSLog(@"archiver failed!");
+    }
+    //NSArray解档
+    NSArray *array2=[NSUnarchiver unarchiveObjectWithFile:path2];
+    [array2 enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSLog(@"array2[%lu]=%@",idx,obj);
+    }];
+    /*结果：
+     array2[0]=Kenshin
+     array2[1]=Kaoru
+     array2[2]=Rosa
+     */
+}
+
+//系统复杂对象归档（多对象归档）
+void test2(){
+    /*归档*/
+    NSString *path1=@"/Users/jason/Desktop/archiver3.arc";
+    
+    int int1=89;
+    CGSize size1={12.5,16.8};
+    NSNumber *number1=@60.5;
+    NSString *str1=@"Hello,world!";
+    NSArray *array1=@[@"Kenshin",@"Kaoru",@"Rosa"];
+    NSDictionary *dic1=@{@"name":@"Kenshin",@"age":@28,@"height":@172.5};
+    
+    //同时对多个对象进行归档
+    NSMutableData *data1=[[NSMutableData alloc]init];//定义一个NSMutableData用于临时存放数据
+    NSKeyedArchiver *archiver=[[NSKeyedArchiver alloc]initForWritingWithMutableData:data1];//定义归档对象
+    [archiver encodeInt:int1 forKey:@"int"];//对int1归档并指定一个key以便以后读取
+    [archiver encodeSize:size1 forKey:@"size"];
+    [archiver encodeObject:number1 forKey:@"number"];
+    [archiver encodeObject:str1 forKey:@"string"];
+    [archiver encodeObject:array1 forKey:@"array"];
+    [archiver encodeObject:dic1 forKey:@"dic"];
+
+    [archiver finishEncoding];//结束归档
+    
+    [data1 writeToFile:path1 atomically:YES];//写入文件
+    
+    
+    
+    /*解档*/
+    int int2;
+    CGSize size2;
+    NSNumber *number2;
+    NSString *str2;
+    NSArray *array2;
+    NSDictionary *dic2;
+    
+    NSData *data2=[[NSData alloc]initWithContentsOfFile:path1];//读出数据到NSData
+    NSKeyedUnarchiver *unarchiver=[[NSKeyedUnarchiver alloc]initForReadingWithData:data2];
+    
+    int2= [unarchiver decodeInt64ForKey:@"int"];
+    size2=[unarchiver decodeSizeForKey:@"size"];
+    number2=[unarchiver decodeObjectForKey:@"number"];
+    str2=[unarchiver decodeObjectForKey:@"string"];
+    array2=[unarchiver decodeObjectForKey:@"array"];
+    dic2=[unarchiver decodeObjectForKey:@"dic"];
+    
+    [unarchiver finishDecoding];
+    
+    NSLog(@"int2=%i,size=%@,number2=%@,str2=%@,array2=%@,dic2=%@",int2,NSStringFromSize(size2),number2,str2,array2,dic2);
+    /*结果：
+     int2=89,
+     size={12.5, 16.800000000000001},
+     number2=60.5,
+     str2=Hello,world!,
+     array2=(
+         Kenshin,
+         Kaoru,
+         Rosa
+     ),
+     dic2={
+         age = 28;
+         height = "172.5";
+         name = Kenshin;
+     }
+     */
+}
+
+
+int main(int argc,char *argv[]){
+
+    test1();
+    test2();
+    
+    return 0;
+}
+```
+
+接下来看一下自定义的对象如何归档，上面说了如果要对自定义对象进行归档那么这个对象必须实现NSCoding协议，在这个协议中有两个方法都必须实现：
+
+```
+//通过给定的Archiver对消息接收者进行编码；
+-(void)encodeWithCoder:(NSCoder *)aCoder;
+
+//从一个给定的Unarchiver的数据返回一个初始化对象；
+-(id)initWithCoder:(NSCoder *)aDecoder;
+```
+
+这两个方法分别在归档和解档时调用。下面通过一个例子进行演示（注意对于自定义类的多对象归档与系统类多对象归档完全一样，代码中不再演示）：
+
+```
+#import <Foundation/Foundation.h>
+
+@interface Person : NSObject<NSCoding>
+
+@property (nonatomic,copy) NSString *name;
+@property (nonatomic,assign) int age;
+@property (nonatomic,assign) float height;
+@property (nonatomic,assign) NSDate *birthday;
+
+@end
+```
+
+Person.m
+
+```
+#import "Person.h"
+
+@implementation Person
+
+//解码
+-(id)initWithCoder:(NSCoder *)aDecoder{
+    NSLog(@"decode...");
+    if (self=[super init]) {
+        self.name=[aDecoder decodeObjectForKey:@"name"];
+        self.age=[aDecoder decodeInt64ForKey:@"age"];
+        self.height=[aDecoder decodeFloatForKey:@"heiht"];
+        self.birthday=[aDecoder decodeObjectForKey:@"birthday"];
+    }
+    return self;
+}
+
+//编码
+-(void)encodeWithCoder:(NSCoder *)aCoder{
+    NSLog(@"encode...");
+    [aCoder encodeObject:_name forKey:@"name"];
+    [aCoder encodeInt64:_age forKey:@"age" ];
+    [aCoder encodeFloat:_height forKey:@"height"];
+    [aCoder encodeObject:_birthday forKey:@"birthday"];
+
+}
+
+//重写描述
+-(NSString *)description{
+    NSDateFormatter *formater1=[[NSDateFormatter alloc]init];
+    formater1.dateFormat=@"yyyy-MM-dd";
+    return [NSString stringWithFormat:@"name=%@,age=%i,height=%.2f,birthday=%@",_name,_age,_height,[formater1 stringFromDate:_birthday]];
+}
+
+@end
+```
+
+main.m
+
+```
+#import <Foundation/Foundation.h>
+#import "Person.h"
+
+
+int main(int argc,char *argv[]){
+
+    //归档
+    Person *person1=[[Person alloc]init];
+    person1.name=@"Kenshin";
+    person1.age=28;
+    person1.height=1.72;
+    NSDateFormatter *formater1=[[NSDateFormatter alloc]init];
+    formater1.dateFormat=@"yyyy-MM-dd";
+    person1.birthday=[formater1 dateFromString:@"1986-08-08"];
+    
+    NSString *path1=@"/Users/jason/Desktop/person1.arc";
+    
+    [NSKeyedArchiver archiveRootObject:person1 toFile:path1];
+
+    //解档
+    Person *person2= [NSKeyedUnarchiver unarchiveObjectWithFile:path1];
+    NSLog(@"%@",person2);
+    /*结果：
+     name=Kenshin,age=28,height=0.00,birthday=1986-08-08
+     */
+    
+    return 0;
+}
+```

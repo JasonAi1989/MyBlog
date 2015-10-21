@@ -1,0 +1,197 @@
+title: Objective-c  拷贝
+toc: true
+date: 2015-10-23 22:15:37
+tags: [objective-c, iOS]
+categories: iOS 100 Days
+description: 
+feature: http://7xj4cp.com1.z0.glb.clouddn.com/objective-c.png
+---
+
+拷贝也叫复制，在编程中对象的拷贝使非常常见的操作，这篇文章主要说明ObjC中的两种拷贝方式——浅拷贝与深拷贝（基本上所有的面向对象编程语言中都含有这两种拷贝方式）。
+
+除了浅拷贝和深拷贝外还要介绍一下ObjC中的两个拷贝方法 —— copy 和 mutablecopy。
+
+<!--more-->
+
++ 浅拷贝：在执行拷贝操作时，对于对象中每一层（对象中包含的对象，例如说属性是某个对象类型）拷贝都是指针拷贝（如果从引用计数器角度出发，那么每层对象的引用计数器都会加1）。 
+
++ 深拷贝：在执行拷贝操作时，至少有一个对象的拷贝是对象内容拷贝（如果从引用计数器角度出发，那么除了对象内容拷贝的那个对象的引用计数器不变，其他指针拷贝的对象其引用计数器都会加1）
+
+**Tips**
+
+	指针拷贝:拷贝的是指针本身（也就是具体对象的地址）而不是指向的对象内容本身。
+	对象拷贝：对象拷贝指的是拷贝内容是对象本身而不是对象的地址。
+	完全拷贝：上面说了深拷贝和浅拷贝，既然深拷贝是至少一个对象拷贝是对象内容拷贝，那么如果所有拷贝都是对象内容拷贝那么这个拷贝就叫完全拷贝。
+    
+两种拷贝方法：
+
++ copy：产生一个新对象，并且新对象是不可变的，无论原始对象是否可变，新对象都是不可变的。
+
++ mutablecopy：产生一个新对象，并且新对象是可变的，无论原始对象是否可变，新对象都是可变的。
+
+对比copy和mutablecopy其实前面我们一直还用到一个操作是retain，它们之间的关系如下：
+
++ retain：始终采取浅拷贝，引用计数器会加1，返回的对象和被拷贝对象是同一个对象1（也就是说这个对象的引用多了一个，或者说是指向这个对象的指针多了一个）；
+
++ copy：对于不可变对象copy采用的是浅拷贝，引用计数器加1（其实这是编译器进行了优化，既然原来的对象不可变，拷贝之后的对象也不可变那么就没有必要再重新创建一个对象了）；对于可变对象copy采用的是深拷贝，引用计数器不变（原来的对象是可变，现在要产生一个不可变的当然得重新产生一个对象）；
+
++ mutablecopy：无论是可变对象还是不可变对象采取的都是深拷贝，引用计数器不变（如果从一个不可变对象产生一个可变对象自然不用说两个对象绝对不一样肯定是深拷贝；如果从一个可变对象产生出另一个可变对象，那么当其中一个对象改变自然不希望另一个对象改变，当然也是深拷贝）。
+
+**Tips**
+
+	
+	可变对象：当值发生了改变，那么地址也随之发生改变；
+	不可变对象：当值发生了改变，内容首地址不发生变化；
+	引用计数器：用于计算一个对象有几个指针在引用（有几个指针变量指向同一个内存地址）；
+
+```
+#import <Foundation/Foundation.h>
+
+void test1(){
+    NSString *name=@"Kenshin";
+    NSString *str1=[NSString stringWithFormat:@"I'm %@.",name];//注意此时str1的计数器是1
+    NSLog(@"%lu",[str1 retainCount]); //结果：1
+    
+    
+    NSMutableString *str2=[str1 mutableCopy];//注意此时str2的计数器为1，str1的计数器还是1
+    //NSMutableString *str5 =CFRetain((__bridge CFTypeRef)str2);
+    NSLog(@"retainCount(str1)=%lu,retainCount(str2)=%lu",[str1 retainCount],[str2 retainCount]);
+    //结果：retainCount(str1)=1,retainCount(str2)=1
+    
+    
+    [str2 appendString:@"def"];//改变str2，str1不变
+    NSLog(@"%zi",str1==str2);//二者不是指向同一个对象,结果：0
+    NSLog(@"str1=%@",str1); //结果：str1=I'm Kenshin.
+    NSLog(@"str2=%@",str2); //结果：str2=I'm Kenshin.def
+    
+    
+    NSLog(@"str1's %lu",[str1 retainCount]);
+    NSString *str3=[str1 copy];//str3不是产生的新对象而是拷贝了对象指针，但是str1的计数器+1（当然既然str3同样指向同一个对象，那么如果计算str3指向的对象引用计数器肯定等于str1的对象引用计数器）
+    NSLog(@"%zi",str1==str3);//二者相等指向同一个对象,结果：1
+    NSLog(@"retainCount(str1)=%lu,retainCount(str3)=%lu",str1.retainCount,str3.retainCount);
+    //结果：retainCount(str1)=2,retainCount(str3)=2
+    
+    //需要注意的是使用copy和mutableCopy是深拷贝还是浅拷贝不是绝对，关键看由什么对象产生什么样的对象
+    NSString *str4=[str2 copy];//由NSMutableString产生了NSString，二者类型都不同肯定是深拷贝，此时str2的计数器还是1，str4的计数器也是1
+    [str2 appendString:@"g"];//改变原对象不影响str4
+    NSLog(@"%zi",str2==str4); //结果：0
+    NSLog(@"str2=%@",str2); //结果：str2=I'm Kenshin.defg
+    NSLog(@"str4=%@",str4); //结果：str4=I'm Kenshin.def
+
+    
+    [str1 release];
+    str1=nil;
+    [str3 release];//其实这里也可以调用str1再次release，因为他们两个指向的是同一个对象（但是一般不建议那么做，不容易理解）
+    str3=nil;
+    
+    [str2 release];
+    str2=nil;
+    [str4 release];
+    str4=nil;
+    
+    //上面只有一种情况是浅拷贝：不可变对象调用copy方法
+    
+}
+
+int main(int argc,char *argv[]){
+    test1();
+    return 0;
+}
+```
+
+为了方便大家理解上面的代码，这里以图形画出str1、str2、str3、str4在内存中的存储情况：
+
+![copy address 1](http://7xj4cp.com1.z0.glb.clouddn.com/copy_address1.png)
+
+从上面可以清楚的看到str1和str3同时指向同一个对象，因此这个对象的引用计数器是2(可以看到两箭头指向那个对象)，str2和str4都是两个新的对象；另外ObjC引入对象拷贝是为了改变一个对象不影响另一个对象，但是我们知道NSString本身就不能改变那么即使我重新拷贝一个对象也没有任何意义，因此为了性能着想如果通过copy方法产生一个NSString时ObjC不会再拷贝一个对象而是将新变量指向同一个对象。 
+
+**Tips**
+
+	注意网上很多人支招在ARC模式下可以利用_objc_rootRetainCount()或者CFGetRetainCount()取得retainCount都是不准确的，特别是在对象拷贝操作之后你会发现二者取值也是不同的，因此如果大家要查看retainCount最好还是暂时关闭ARC。
+
+
+要想支持copy或者mutablecopy操作那么对象必须实现NSCoping协议并实现-(id)copyWithZone:(NSZone*)zone方法，在Foundation中常用的可拷贝对象有：NSNumber、NSString、NSMutableString、NSArray、NSMutableArray、NSDictionary、NSMutableDictionary。下面看一下如何让自定义的类支持copy操作：
+
+Person.h
+
+```
+#import <Foundation/Foundation.h>
+@class Account;
+
+@interface Person : NSObject
+
+@property  NSMutableString *name;
+@property (nonatomic,assign) int age;
+
+@end
+```
+
+Person.m
+
+```
+
+#import "Person.h"
+
+@implementation Person
+
+-(NSString *)description{
+    return [NSString stringWithFormat:@"name=%@,age=%i",_name,_age];
+}
+
+//实现copy方法
+-(id)copyWithZone:(NSZone *)zone{
+    //注意zone是系统已经分配好的用于存储当前对象的内存
+    //注意下面创建对象最好不要用[[Person allocWithZone:zone]init]，因为子类如果没有实现该方法copy时会调用父类的copy方法，此时需要使用子类对象初始化如果此时用self就可以表示子类对象，还有就是如果子类调用了父类的这个方法进行重写copy也需要调用子类对象而不是父类Person
+    Person *person1=[[[self class] allocWithZone:zone]init];
+    person1.name=_name;
+    person1.age=_age;
+    return person1;
+}
+
+@end
+```
+
+main.m
+
+```
+#import <Foundation/Foundation.h>
+#import "Account.h"
+#import "Person.h"
+
+void test1(){
+    Person *person1=[[Person alloc]init];
+    NSMutableString *str1=[NSMutableString stringWithString:@"Kenshin"];
+    person1.name=str1;
+    //由于name定义的时候使用属性参数采用的是copy策略，而根据前面的知识我们知道NSMutableString的copy策略采用的是对象内容拷贝，因此如果修改str1不会改变person1.name
+    [str1 appendString:@" Cui"];
+    NSLog(@"%@",str1);//结果：Kenshin Cui
+    NSLog(@"%@",person1.name); //结果：Kenshin
+    
+}
+
+void test2(){
+    Person *person1=[[Person alloc]init];
+    person1.name=[NSMutableString stringWithString:@"Kenshin"];
+    person1.age=28;
+    Person *person2=[person1 copy];
+    NSLog(@"%@",person1); //结果：name=Kenshin,age=0
+    NSLog(@"%@",person2); //结果：name=Kenshin,age=0
+    
+    [person2.name appendString:@" Cui"];
+    
+    NSLog(@"%@",person1);//结果：name=Kenshin Cui,age=28
+    NSLog(@"%@",person2);//结果：name=Kenshin Cui,age=28
+}
+
+int main(int argc,char *argv[]){
+    test1();
+    test2();
+    return 0;
+}
+```
+
+在上面的代码中重点说一下test2这个方法，在test2方法中我们发现当修改了person2.name属性之后person1.name也改变了，这是为什么呢？我们可以看到在Person.m中自定义实现了copy方法，同时实现了一个浅拷贝。之所以说是浅拷贝主要是因为我们的name属性参数是直接赋值完成的，同时由于name属性定义时采用的是assign参数（默认为assign），所以当通过copy创建了person2之后其实person2对象的name属性和person1指向同一个NSMutableString对象。通过图形表示如下：
+
+![copy address 2](http://7xj4cp.com1.z0.glb.clouddn.com/copy_address2.png)
+
+上面test2的写法纯属为了让大家了解拷贝的原理和本质，实际开发中我们很少会遇到这种情况，首先我们一般定义name的话可能用的是NSString类型，根本也不能修改；其次我们定义字符串类型的话一般使用(copy)参数，同样可以避免这个问题（因为NSMutableString的copy是深拷贝）。那么如果我们非要使用NSMutabeString同时不使用属性的copy参数如何解决这个问题呢？答案就是使用深拷贝，将-(id)copyWithZone:(NSZone *)zone方法中person1.name=_name改为，person1.name=[_name copy];或person1.name=[_name mutablecopy]即可，这样做也正好满足我们上面对于深拷贝的定义。
