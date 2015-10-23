@@ -161,7 +161,11 @@ NSString * __weak str = @"hehe"; // 正确
 __weak NSString *str = @"hehe";  // 错误
 ```
 
-
+**Tips**
+    
+    1.在iOS开发中使用strong、weak代替之前的retain、assign（基本类型使用assign，因为我们不需要对基本类型进行内存管理）；
+    2.如果一个属性使用IBOutlet修饰（也就是此属性是strongboard中组件）那么使用weak；
+    3.如果一个属性不是storyboard组件（一般纯代码编写界面时），使用strong；
 
 
 
