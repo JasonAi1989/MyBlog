@@ -1,7 +1,7 @@
 title: 英式音标VS美式音标
 tags: [English]
 toc: true
-date: 2015-09-29 12:23:09
+date: 2015-10-11 13:23:09
 categories: English
 description: 此文主要讲解英式音标和美式音标的区别
 feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
@@ -15,7 +15,9 @@ feature: http://7xj4cp.com1.z0.glb.clouddn.com/vs.png
 
 [>> 英语48个音标——11清辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%9411%E6%B8%85%E8%BE%85%E9%9F%B3/)
 
-[>> 英语48个音标——17浊辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%9417%E6%B5%8A%E8%BE%85%E9%9F%B3/)
+[>> 英语48个音标——11浊辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%9411%E6%B5%8A%E8%BE%85%E9%9F%B3/)
+
+[>> 英语48个音标——6其他辅音](http://www.jasonai.com/2015/09/28/%E8%8B%B1%E8%AF%AD48%E4%B8%AA%E9%9F%B3%E6%A0%87%E2%80%94%E2%80%946%E5%85%B6%E4%BB%96%E8%BE%85%E9%9F%B3/)
 
 [>> 清辅音浊化规则](http://www.jasonai.com/2015/10/10/%E6%B8%85%E8%BE%85%E9%9F%B3%E6%B5%8A%E5%8C%96%E8%A7%84%E5%88%99/)
 
